@@ -1,0 +1,172 @@
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+               
+                </head>
+    
+    <script>
+       
+        
+       /*
+        1、window.webkit.messageHandlers.setLocalStorage.postMessage(arr);
+           setLocalStorage 存数据的方法名 参数为数组，第一个参数是字符串-表示字典的键值，第二个参数是泛型即一切类型均可以-表示存的数据内容
+        2、 window.webkit.messageHandlers.getLocalStorage.postMessage('key');
+        getLocalStorage  取数据的方法名 参数为字符串（键值），根据键值来获取存取的内容
+        成功返回后调用 getCallBackValue方法并返回参数
+        3、window.webkit.messageHandlers.removeLocalStorage.postMessage('key');
+        removeLocalStorage  移除缓存方法名 参数为字符串（键值），根据键值来移除缓存
+
+        
+
+        var arr = ['a',{'a1':'aa','b1':'bb'}];
+        window.webkit.messageHandlers.setLocalStorage.postMessage(arr);
+        window.webkit.messageHandlers.getLocalStorage.postMessage('a');
+        function getCallBackValue(agr){
+            var callobj = JSON.stringify(agr);
+            alert(callobj)
+        }
+       window.webkit.messageHandlers.removeLocalStorage.postMessage('a');
+        */
+    
+        /*
+         网络请求接口  window.webkit.messageHandlers.AFNetWorking.postMessage(callInfo);
+         AFNetWorking 调网络请求接口方法名 参数字典：请求发送的参数
+         成功返回后 调用 netCallBack方法并返回参数
+         
+        var callInfo = {'ServiceName':'RequestGetCompany','Data':{'WorkingId':'KF'}};
+        window.webkit.messageHandlers.AFNetWorking.postMessage(callInfo);
+       //网络请求成功后返回业务参数 netCallBack
+       function netCallBack(obj)
+       {
+           var callobj = JSON.stringify(obj);
+           alert(callobj);
+       }
+    */
+    
+    /*
+     语音读报接口 window.webkit.messageHandlers.playVoice.postMessage('');
+     参数：字符串  #--成功  *--失败  ‘内容’--语音读报内容
+    
+     window.webkit.messageHandlers.playVoice.postMessage('nihao nishi hello hi');
+     */
+   
+ 
+        </script>
+    <script>
+       /*
+        bubuJs = {
+            
+            netWorking:function(_DStr,_callBack){
+               
+                return jsBridgeIos.netWorking(_DStr, _callback);
+            }
+        },
+    var callInfo = {'ServiceName':'RequestGetCompany','Data':{'WorkingId':'KF'}};
+    jsBridgeIos = {
+      
+        netWorking: function (nativeStr, _callback) {
+            alert(_callback)
+            window.netCallBack = _callback;
+            if (typeof nativeStr == "function") {
+                _callback = nativeStr;
+                window.netCallBack = _callback;
+              
+              setTimeout(function () {
+                         window.webkit.messageHandlers.AFNetWorking.postMessage();
+                         }, 0);
+                          
+                           
+            } else {
+                setTimeout(function () {
+                           window.webkit.messageHandlers.AFNetWorking.postMessage(nativeStr);
+                           }, 0);
+            }
+            
+            }
+        },
+    }
+  
+       */
+                                  
+        </script>
+    <body>
+<!--        <input id='ipt' type="button" value='网络请求方法'  onclick="btn()"> </input>-->
+        <br>
+<!--         <input id='returnValue' type="button"  value='camera' onclick="takeCamera()"> </input>-->
+          <button onclick="takeCamera()">访问相册</button>
+        <div>
+<!--            <img src="head2.jpg" id="imgphoto" style="width: 30%; height: 30%;" onclick="getIOSImage()">-->
+        </div>
+       <img src="encodedImageStr" style="width: 30%; height: 30%;" id='imgr' onclick="getIOSImage()"/>
+        <script>
+           /*
+            localstorage永久存储，不过期，除非手动删除，sessionstorage在重启浏览器、关闭页面或新开页面时失效。
+            localStorage.getItem(key):获取指定key本地存储的值
+            localStorage.setItem(key,value)：将value存储到key字段
+            localStorage.removeItem(key):删除指定key本地存储的值
+            
+          HTML5 sessionStorage会话存储  http://www.cnblogs.com/polk6/p/5512979.html
+            sessionStorage 是HTML5新增的一个会话存储对象，用于临时保存同一窗口(或标签页)的数据，在关闭窗口或标签页之后将会删除这些数据
+            */
+          // localStorage.removeItem("access");
+            // var imgStr = localStorage.getItem('headImage');
+         
+          //头像  head2.jpg
+         //  var imgStr =   sessionStorage.getItem('headImage');
+        
+         var imgStr;
+        function takeCamera(){
+            //相机拍照
+            window.webkit.messageHandlers.camera.postMessage(null);
+        }
+        //相机拍照后图片
+        function callBackPhoto(encodedImageStr){
+            imgStr = encodedImageStr;
+            document.getElementById("imgr").src="data:image/jpeg;base64,"+encodedImageStr;
+        }
+        function getIOSImage(){
+            //预览图片
+            window.webkit.messageHandlers.viewPictrue.postMessage(imgStr);
+            // 参数：字符串，可以是图片也可以是base64字符串
+        }
+        
+         /*
+           //获取登录返回缓存值
+        var token = sessionStorage["Rtn_Data"];
+        //后续要操作该JSON对象，要将之前存储的JSON字符串先转成JSON对象再进行操作
+        var  obj=JSON.parse(sessionStorage.getItem("Rtn_Data"));
+        alert(JSON.stringify(obj));
+        
+        
+            function btn(){
+                var callInfo = {'ServiceName':'RequestGetCompany','Data':{'WorkingId':'KF'}};
+                window.webkit.messageHandlers.AFNetWorking.postMessage(callInfo);
+            }
+          */
+      
+        /*
+        //打开通讯录，获取通讯录中手机号
+        window.webkit.messageHandlers.openContact.postMessage(null);
+        function  callBackContactPhone(phone)
+        {
+            
+            alert(phone);
+        }
+        function btn(){
+           
+            window.webkit.messageHandlers.openContact.postMessage(null);
+        }
+         
+         //------------------调用高德获取定位
+         window.webkit.messageHandlers.getLocation.postMessage(null);
+         //成功返回
+         function callBackGetLocation(log,lat) {
+             alert("经度:"+log+"纬度:"+lat);
+             document.getElementById("returnValue").value = "经度:"+log+"纬度:"+lat;
+         }
+         */
+            </script>
+    </body>
+</html>
+
